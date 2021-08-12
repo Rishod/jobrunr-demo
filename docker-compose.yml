@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  jobrunr-service:
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+      - "8000:8000"
+    depends_on:
+      - postgres
+
+  # replicate service to demonstrate cluster mode
+  jobrunr-service-repl:
+    build:
+      context: .
+    depends_on:
+      - jobrunr-service
+
+  postgres:
+    image: postgres:12.0-alpine
+    environment:
+      POSTGRES_DB: jobrunr_schema
+      POSTGRES_USER: jobrunr
+      POSTGRES_PASSWORD: root
